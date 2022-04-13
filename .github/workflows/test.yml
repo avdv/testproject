@@ -1,0 +1,13 @@
+name: Ruby
+
+on:
+  push:
+    branches: [ main ]
+    tags: [ 'v[0-9]*' ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - run: echo $GITHUB_REF
