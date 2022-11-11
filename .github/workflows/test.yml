@@ -14,7 +14,7 @@ jobs:
         run: |
           Set-ExecutionPolicy Bypass -Scope Process -Force
           [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072
-          Invoke-Command -ScriptBlock ([ScriptBlock]::Create((Invoke-WebRequest https://www.haskell.org/ghcup/sh/bootstrap-haskell.ps1 -UseBasicParsing))) -ArgumentList $false,-Minimal,$true,-ExistingMssy2Dir,C:\msys64
+          Invoke-Command -ScriptBlock ([ScriptBlock]::Create((Invoke-WebRequest https://www.haskell.org/ghcup/sh/bootstrap-haskell.ps1 -UseBasicParsing))) -ArgumentList $false,-Minimal:$true,-ExistingMssy2Dir:C:\msys64
       - run: cabal --version
       - run: ghcup install ghc 9.4.3
       - name: Setup tmate session
