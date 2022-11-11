@@ -1,16 +1,22 @@
-name: Ruby
+name: Test
 
 on:
   push:
-    branches: [ main ]
-    tags: [ 'v[0-9]*' ]
 
 jobs:
   test:
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
 
     steps:
       - run: echo $GITHUB_REF
+      - name: Install ghcup
+        shell: powershell
+        run: |
+          Set-ExecutionPolicy Bypass -Scope Process -Force
+          [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072
+          Invoke-Command -ScriptBlock ([ScriptBlock]::Create((Invoke-WebRequest https://www.haskell.org/ghcup/sh/bootstrap-haskell.ps1 -UseBasicParsing))) -ArgumentList $true
+      - run: cabal --version
+      - run: ghcup install ghc 9.4.3
       - name: Setup tmate session
         uses: mxschmitt/action-tmate@v3
         with:
