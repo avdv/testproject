@@ -23,7 +23,6 @@
           inherit (pkgs) pkgsStatic;
           llvmVersion = import ./llvmVersion.nix;
           stdenvStatic = pkgsStatic."llvmPackages_${toString llvmVersion}".libcxxStdenv;
-          stdenvStatic = pkgsStatic.${llvmPackage}.libcxxStdenv;
         in
         stdenvStatic.mkDerivation {
           name = "llvmcompile";
