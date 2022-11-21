@@ -28,10 +28,10 @@
           name = "llvmcompile";
           src = ./.;
           buildPhase = ''
-            $CXX -c foo.cc
-            $CXX -c main.cc
+            $CXX -flto=thin -c foo.cc
+            $CXX -flto=thin -c main.cc
             export NIX_DEBUG=1
-            $CXX -v -rdynamic -o exe main.o foo.o -lc++abi
+            $CXX -v -flto=thin -rdynamic -o exe main.o foo.o -lc++abi
           '';
           installPhase = "install -D -t $out/bin exe";
         };
