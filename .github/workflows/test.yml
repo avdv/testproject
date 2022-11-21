@@ -6,6 +6,7 @@ on:
 jobs:
   test: 
     strategy:
+      fail-fast: false
       matrix:
         llvm: [11, 12, 13, 14]
     runs-on: macos-latest
@@ -20,7 +21,7 @@ jobs:
         uses: cachix/cachix-action@v12
         with:
           name: cbley
+      - run: echo ${{ matrix.llvm }} > llvmVersion.nix
       - run: nix build --print-build-logs
-        env:
-          LLVM_VERSION: llvmPackages_${{ matrix.llvm }}
+
 
