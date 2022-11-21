@@ -21,7 +21,7 @@
             system = "x86_64-darwin";
           };
           inherit (pkgs) pkgsStatic;
-          llvmPackage = getenv "llvm";
+          llvmPackage = builtins.getEnv "llvm";
           stdenvStatic = pkgsStatic.${llvmPackage}.libcxxStdenv;
         in
         stdenvStatic.mkDerivation {
