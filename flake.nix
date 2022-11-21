@@ -31,7 +31,27 @@
             $CXX -c foo.cc
             $CXX -c main.cc
             export NIX_DEBUG=1
-            $CXX -v -rdynamic -o exe main.o foo.o
+            $CXX -v -rdynamic -o exe main.o foo.o -lc++abi
+          '';
+          installPhase = "install -D -t $out/bin exe";
+        };
+
+      packages.x86_64-linux.default =
+        let
+          pkgs = import nixpkgs {
+            system = "x86_64-linux";
+          };
+          inherit (pkgs) pkgsStatic;
+          llvmVersion = import ./llvmVersion.nix;
+          stdenvStatic = pkgsStatic."llvmPackages_${toString llvmVersion}".libcxxStdenv;
+        in
+        stdenvStatic.mkDerivation {
+          name = "llvmcompile";
+          src = ./.;
+          buildPhase = ''
+            $CXX -c foo.cc
+            $CXX -c main.cc
+            $CXX -rdynamic -o exe main.o foo.o
           '';
           installPhase = "install -D -t $out/bin exe";
         };
