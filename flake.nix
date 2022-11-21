@@ -30,7 +30,7 @@
           buildPhase = ''
             $CXX -c foo.cc
             $CXX -c main.cc
-            $CXX -rdynamic -o exe main.o foo.o
+            $CXX -v -rdynamic -o exe main.o foo.o
           '';
           installPhase = "install -D -t $out/bin exe";
         };
