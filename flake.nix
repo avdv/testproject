@@ -30,7 +30,8 @@
           buildPhase = ''
             $CXX -c foo.cc
             $CXX -c main.cc
-            $CXX -x c++ -v -rdynamic -o exe main.o foo.o
+            export NIX_DEBUG=1
+            $CXX -v -rdynamic -o exe main.o foo.o
           '';
           installPhase = "install -D -t $out/bin exe";
         };
