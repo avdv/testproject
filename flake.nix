@@ -27,11 +27,12 @@
         stdenvStatic.mkDerivation {
           name = "llvmcompile";
           src = ./.;
+          nativeBuildInputs = [ pkgs."llvmPackages_${toString llvmVersion}".lld ];
           buildPhase = ''
             $CXX -flto=thin -c foo.cc
             $CXX -flto=thin -c main.cc
             export NIX_DEBUG=1
-            $CXX -v -flto=thin -rdynamic -o exe main.o foo.o -lc++abi
+            $CXX -v -fuse-ld=lld -flto=thin -rdynamic -o exe main.o foo.o -lc++abi
           '';
           installPhase = "install -D -t $out/bin exe";
         };
