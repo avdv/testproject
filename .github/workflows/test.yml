@@ -4,6 +4,12 @@ on:
   push:
 
 jobs:
+  bazel:
+    runs-on: ubuntu-latest
+    steps:
+      - run: which bazel
+      - run: bazel --help
+
   test:
     runs-on: windows-latest
 
