@@ -4,14 +4,15 @@ on:
   push:
 
 jobs:
-  test: 
+  test:
     strategy:
       fail-fast: false
       matrix:
-        llvm: [11, 12, 13, 14]
-    runs-on: macos-latest
+        llvm: [11, 12, 13, 14, 15]
+        os: [ubuntu-latest, macos-latest]
+    runs-on: ${{ matrix.os }}
 
-    name: "LLVM ${{matrix.llvm}}"
+    name: "LLVM ${{matrix.llvm}} on ${{matrix.os}}"
     steps:
       - run: echo $GITHUB_REF
       - uses: actions/checkout@v3
@@ -23,5 +24,3 @@ jobs:
           name: cbley
       - run: echo ${{ matrix.llvm }} > llvmVersion.nix
       - run: nix build --print-build-logs
-
-
