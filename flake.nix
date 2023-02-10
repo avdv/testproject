@@ -45,11 +45,20 @@
           inherit (pkgs) pkgsStatic;
           llvmVersion = import ./llvmVersion.nix;
           stdenvStatic = pkgsStatic."llvmPackages_${toString llvmVersion}".libcxxStdenv;
+          empty-gcc-eh = pkgs.runCommand "empty-gcc-eh" { } ''
+            if $CC -Wno-unused-command-line-argument -x c - -o /dev/null <<< 'int main() {}'; then
+              echo "linking succeeded; please remove empty-gcc-eh workaround" >&2
+              exit 3
+            fi
+            mkdir -p $out/lib
+            ${pkgs.binutils-unwrapped}/bin/ar r $out/lib/libgcc_eh.a
+          '';
         in
         stdenvStatic.mkDerivation {
           name = "llvmcompile";
           src = ./.;
           buildPhase = ''
+            export NIX_LDFLAGS="$NIX_LDFLAGS -L${empty-gcc-eh}/lib"
             $CXX -c foo.cc
             $CXX -c main.cc
             $CXX -rdynamic -o exe main.o foo.o
