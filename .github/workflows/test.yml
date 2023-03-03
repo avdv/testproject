@@ -10,7 +10,7 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
-
+    environment: debug
     steps:
       - run: echo $GITHUB_REF
       - run: echo ${{ hashFiles('LICENSE') }}
