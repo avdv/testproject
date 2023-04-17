@@ -46,10 +46,14 @@
               mkdir -p $out/lib
               ${prev.binutils-unwrapped}/bin/ar r $out/lib/libgcc_eh.a
             '';
-            pkgsStatic."llvmPackages_${toString llvmVersion}".libcxxabi =
-              prev.pkgsStatic."llvmPackages_${toString llvmVersion}".libcxxabi.overrideAttrs (old: {
-                buildInputs = pkgsStatic."llvmPackages_${toString llvmVersion}".libcxxabi.buildInputs + [ final.empty-gcc-eh ];
-              });
+            pkgsStatic."llvmPackages_${toString llvmVersion}" = prev.lib.recursiveUpdate
+              pkgsStatic."llvmPackages_${toString llvmVersion}"
+              {
+                libcxxabi = prev.pkgsStatic."llvmPackages_${toString llvmVersion}".libcxxabi.overrideAttrs
+                  (old: {
+                    buildInputs = pkgsStatic."llvmPackages_${toString llvmVersion}".libcxxabi.buildInputs + [ final.empty-gcc-eh ];
+                  });
+              };
           };
           pkgs = import nixpkgs {
             system = "x86_64-linux";
