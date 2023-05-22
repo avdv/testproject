@@ -1,9 +1,7 @@
-name: Ruby
+name: GHC Hadrian
 
 on:
   push:
-    branches: [ main ]
-    tags: [ 'v[0-9]*' ]
 
 jobs:
   test:
@@ -11,7 +9,19 @@ jobs:
 
     steps:
       - run: echo $GITHUB_REF
-      - name: Setup tmate session
-        uses: mxschmitt/action-tmate@v3
+      - run: curl -LO https://downloads.haskell.org/~ghc/9.2.5/ghc-9.2.5-src.tar.xz
+      - run: tar xaf ghc-9.2.5-src.tar.xz
+      - run: cabal update
+      - run: |
+          cd ghc-9.2.5
+          ./boot
+          ./configure
+          hadrian/build -j binary-dist
+      - name: Upload dist
+        uses: softprops/action-gh-release@v1
         with:
-          limit-access-to-actor: true
+          fail_on_unmatched_files: true
+          name: 'ghc-9.2.5'
+          tag_name: 'ghc-9.2.5'
+          files: |
+            _build/bindist/ghc-9.2.5-x86_64-unknown-linux.tar.xz
