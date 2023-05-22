@@ -12,6 +12,7 @@ jobs:
       - run: curl -LO https://downloads.haskell.org/~ghc/9.2.5/ghc-9.2.5-src.tar.xz
       - run: tar xaf ghc-9.2.5-src.tar.xz
       - run: cabal update
+      - run: sudo apt-get install libghc-hashable-dev libghc-unordered-containers-dev
       - run: |
           cd ghc-9.2.5
           ./boot
