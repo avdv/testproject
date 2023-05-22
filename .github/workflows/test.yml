@@ -11,15 +11,17 @@ jobs:
       - run: echo $GITHUB_REF
       - run: curl -LO https://downloads.haskell.org/~ghc/9.2.5/ghc-9.2.5-src.tar.xz
       - run: tar xaf ghc-9.2.5-src.tar.xz
-      - run: cabal update
-      - run: cabal v2-install alex happy
+      - run: sudo apt-get install python3-sphinx texlive-xetex texlive-fonts-recommended fonts-lmodern texlive-latex-recommended texlive-latex-extra
       - run: |
           ghcup install ghc 9.2.5
           ghcup set ghc 9.2.5
+      - run: cabal update
+      - run: cabal v2-install alex happy
       - run: |
           cd ghc-9.2.5
           ./boot
-          ./configure
+          ./configure -C
+          hadrian/build -j docs
           hadrian/build -j binary-dist
       - name: Upload dist
         uses: softprops/action-gh-release@v1
