@@ -19,8 +19,12 @@ jobs:
             experimental-features = nix-command flakes
       - run: echo $GITHUB_REF
       - run: |
-          nix-shell -I nixpkgs=https://nixos.org/channels/nixos-23.05 --command 'find -type f -print0 | strip-nondeterminism'
-          nix-shell -I nixpkgs=https://nixos.org/channels/nixos-unstable --command 'find -type f -print0 | strip-nondeterminism'
+          nix-channel --add https://nixos.org/channels/nixos-23.05 nixpkgs
+          nix-channel --update nixpkgs
+          nix-shell --command 'find -type f -print0 | strip-nondeterminism' || true
+          nix-channel --add https://nixos.org/channels/nixos-unstable nixpkgs
+          nix-channel --update nixpkgs
+          nix-shell --command 'find -type f -print0 | strip-nondeterminism'
       #- name: Setup tmate session
       #  uses: mxschmitt/action-tmate@v3
       #  with:
