@@ -7,11 +7,23 @@ on:
 
 jobs:
   test:
-    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+    runs-on: ${{ matrix.os }}
 
     steps:
-      - run: echo $GITHUB_REF
-      - name: Setup tmate session
-        uses: mxschmitt/action-tmate@v3
+      - uses: actions/checkout@v3
+      - name: "Install Nix ❄"
+        uses: cachix/install-nix-action@v21
         with:
-          limit-access-to-actor: true
+          extra_nix_config: |
+            experimental-features = nix-command flakes
+      - run: echo $GITHUB_REF
+      - run: |
+          nix-shell -I nixpkgs=https://nixos.org/channels/nixos-23.05 --command 'find -type f -print0 | strip-nondeterminism'
+          nix-shell -I nixpkgs=https://nixos.org/channels/nixos-unstable --command 'find -type f -print0 | strip-nondeterminism'
+      #- name: Setup tmate session
+      #  uses: mxschmitt/action-tmate@v3
+      #  with:
+      #    limit-access-to-actor: true
