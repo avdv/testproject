@@ -1,4 +1,4 @@
-name: Test Darwin
+name: Test LLVM
 
 on:
   push:
@@ -10,7 +10,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        llvm: [11, 12, 13, 14, 15]
+        llvm: [11, 12, 13, 14, 15, 16]
         os: [ubuntu-latest, macos-latest]
     runs-on: ${{ matrix.os }}
 
