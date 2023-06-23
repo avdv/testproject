@@ -1,0 +1,34 @@
+name: GHC Hadrian (macos)
+
+on:
+  workflow_dispatch:
+
+jobs:
+
+  build:
+    runs-on: macos-latest
+
+    steps:
+      - run: echo $GITHUB_REF
+      - run: curl -LO https://downloads.haskell.org/~ghc/9.2.5/ghc-9.2.5-src.tar.xz
+      - run: tar xaf ghc-9.2.5-src.tar.xz
+      - run: |
+          ghcup install ghc 9.2.5
+          ghcup set ghc 9.2.5
+      - run: cabal update
+      - run: cabal v2-install alex happy
+      - run: |
+          cd ghc-9.2.5
+          ./boot
+          sdk_path="$(xcrun --sdk macosx --show-sdk-path)"
+          ./configure --with-system-libffi --with-intree-gmp --with-ffi-libraries=$sdk_path/usr/lib --with-ffi-includes=$sdk_path/usr/include/ffi -C
+          hadrian/build -j docs
+          hadrian/build -j binary-dist
+      - name: Upload dist
+        uses: softprops/action-gh-release@v1
+        with:
+          fail_on_unmatched_files: true
+          name: 'ghc-9.2.5'
+          tag_name: 'ghc-9.2.5'
+          files: |
+            ghc-9.2.5/_build/bindist/ghc-9.2.5-*.tar.xz
