@@ -19,7 +19,7 @@ jobs:
       - run: cabal v2-install alex happy
       - run: brew install autoconf automake python sphinx-doc
       - run: |
-          export PATH="/opt/homebrew/opt/sphinx-doc/bin:$PATH"
+          export PATH="/usr/local/opt/sphinx-doc/bin:$PATH"
           cd ghc-9.2.5
           ./boot
           sdk_path="$(xcrun --sdk macosx --show-sdk-path)"
