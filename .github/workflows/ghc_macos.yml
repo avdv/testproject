@@ -27,8 +27,8 @@ jobs:
           ./boot
           sdk_path="$(xcrun --sdk macosx --show-sdk-path)"
           ./configure --with-system-libffi --with-intree-gmp --with-ffi-libraries=$sdk_path/usr/lib --with-ffi-includes=$sdk_path/usr/include/ffi -C
-          hadrian/build -j docs
-          hadrian/build -j binary-dist
+          hadrian/build -j docs --docs=no-sphinx-pdfs
+          hadrian/build -j binary-dist --docs=no-sphinx-pdfs
       - name: Upload dist
         uses: softprops/action-gh-release@v1
         with:
