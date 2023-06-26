@@ -17,7 +17,7 @@ jobs:
           ghcup set ghc 9.2.5
       - run: cabal update
       - run: cabal v2-install alex happy
-      - run: brew install autoconf automake python sphinx-doc
+      - run: brew install autoconf automake python sphinx-doc@6.2.1
       - run: |
           export PATH="/usr/local/opt/sphinx-doc/bin:$PATH"
           export PATH="$HOME/.cabal/bin:$PATH"
