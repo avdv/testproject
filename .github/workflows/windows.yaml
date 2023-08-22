@@ -1,0 +1,13 @@
+name: Windows
+on:
+  push
+
+jobs:
+  check_vc:
+    runs-on: windows-latest
+    steps:
+      - run: |
+          curl -vLO https://download.microsoft.com/download/6/A/A/6AA4EDFF-645B-48C5-81CC-ED5963AEAD48/vc_redist.x64.exe
+          ./vc_redist.x64.exe /passive /norestart
+
+
