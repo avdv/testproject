@@ -8,7 +8,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - run: unzip protoc.zip
-      - run: protoc.exe --help
+      - run: './protoc.exe --help'
 
 
 
