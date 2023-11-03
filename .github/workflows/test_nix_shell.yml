@@ -15,5 +15,5 @@ jobs:
       - run: echo hello
 
       - run: cowsay hello
-        shell: nix-shell -p cowsay --argstr script {0} 'pkgs.writers.writeBashBin "nix-ci" "cowsay hello"' --run 'nix-ci'
+        shell: nix-shell --argstr script {0} ci.nix --run ci.nix
 
