@@ -11,6 +11,7 @@ jobs:
 
     steps:
       - uses: cachix/install-nix-action@v23
+      - uses: actions/checkout@v4
 
       - run: echo hello
 
