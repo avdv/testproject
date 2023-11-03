@@ -11,6 +11,9 @@ jobs:
 
     steps:
       - uses: cachix/install-nix-action@v23
+        with:
+          nix_path: nixpkgs=channel:nixos-23.05-small
+
       - uses: actions/checkout@v4
 
       - run: echo hello
