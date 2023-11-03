@@ -1,0 +1,19 @@
+
+name: Test Nix Shell
+
+on:
+  push:
+
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: cachix/install-nix-action@v23
+
+      - run: echo hello
+
+      - run: cowsay hello
+        shell: nix-shell -p cowsay --argstr script {0} 'pkgs.writers.writeBashBin "nix-ci" "exec $BASH ${args.script}"' --run 'nix-ci'
+
