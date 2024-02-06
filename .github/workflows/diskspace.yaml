@@ -9,9 +9,9 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - run: apt-get update && apt-get install -yy ncdu
+      - run: sudo apt-get update && sudo apt-get install -yy ncdu
       - run: df -h
-      - run: ncdu -o diskspace.ncdu -x /
+      - run: sudo ncdu -o diskspace.ncdu -x /
       - uses: actions/upload-artifact@v4
         with:
           path: diskspace.ncdu
