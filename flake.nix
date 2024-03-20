@@ -8,7 +8,8 @@
       newShell = pkgs:
         let
           inherit (pkgs) pkgsStatic;
-          stdenvStatic = pkgsStatic.llvmPackages_11.libcxxStdenv;
+          llvmVersion = import ./llvmVersion.nix;
+          stdenvStatic = pkgsStatic."llvmPackages_${toString llvmVersion}".libcxxStdenv;
           mkShell = pkgsStatic.mkShell.override { stdenv = stdenvStatic; };
         in
         mkShell {
@@ -43,6 +44,7 @@
           llvmVersion = import ./llvmVersion.nix;
           addEmptyGccEh = final: prev: {
             empty-gcc-eh = prev.runCommand "empty-gcc-eh" { } ''
+              echo ${prev.binutils-unwrapped}
               mkdir -p $out/lib
               ${prev.binutils-unwrapped}/bin/ar r $out/lib/libgcc_eh.a
             '';
@@ -62,21 +64,22 @@
             overlays = [ addEmptyGccEh ];
           };
           inherit (pkgs) pkgsStatic;
-          stdenvStatic = pkgsStatic."llvmPackages_${toString llvmVersion}".libcxxStdenv;
-          empty-gcc-eh = pkgs.runCommand "empty-gcc-eh" { } ''
-            if $CC -Wno-unused-command-line-argument -x c - -o /dev/null <<< 'int main() {}'; then
-              echo "linking succeeded; please remove empty-gcc-eh workaround" >&2
-              exit 3
-            fi
-            mkdir -p $out/lib
-            ${pkgs.binutils-unwrapped}/bin/ar r $out/lib/libgcc_eh.a
-          '';
+          stdenvStatic = builtins.trace ("llvm version: ${toString llvmVersion}") pkgsStatic."llvmPackages_${toString llvmVersion}".libcxxStdenv;
+          #empty-gcc-eh = pkgs.runCommand "empty-gcc-eh" { } ''
+          #  $CC --version
+          #  if $CC -Wno-unused-command-line-argument -x c - -o /dev/null <<< 'int main() {}'; then
+          #    echo "linking succeeded; please remove empty-gcc-eh workaround" >&2
+          #    exit 3
+          #  fi
+          #  mkdir -p $out/lib
+          #  ${pkgs.binutils-unwrapped}/bin/ar r $out/lib/libgcc_eh.a
+          #'';
         in
         stdenvStatic.mkDerivation {
           name = "llvmcompile";
           src = ./.;
           buildPhase = ''
-            export NIX_LDFLAGS="$NIX_LDFLAGS -L${empty-gcc-eh}/lib"
+            $CXX --version
             $CXX -c foo.cc
             $CXX -c main.cc
             $CXX -rdynamic -o exe main.o foo.o
@@ -86,8 +89,27 @@
 
       devShells.x86_64-linux.default =
         let
+          llvmVersion = import ./llvmVersion.nix;
+          addEmptyGccEh = final: prev: {
+            empty-gcc-eh = prev.runCommand "empty-gcc-eh" { } ''
+              echo ${prev.binutils-unwrapped}
+              mkdir -p $out/lib
+              ${prev.binutils-unwrapped}/bin/ar r $out/lib/libgcc_eh.a
+            '';
+            "llvmPackages_${toString llvmVersion}" = prev.lib.attrsets.updateManyAttrsByPath [
+              {
+                path = [ "llvmPackages_${toString llvmVersion}" "libcxxabi" ];
+                update = (old: old.overrideAttrs
+                  (_: {
+                    buildInputs = old.libcxxabi.buildInputs + [ final.empty-gcc-eh ];
+                  }));
+              }
+            ]
+              prev;
+          };
           pkgs = import nixpkgs {
             system = "x86_64-linux";
+            # overlays = [ addEmptyGccEh ];
           };
         in
         newShell pkgs;

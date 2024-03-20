@@ -1,0 +1,14 @@
+name: Debug
+
+on:
+  push:
+
+jobs:
+  debug:
+    runs-on: macos-14
+
+    steps:
+      - name: Dump runner context
+        env:
+          RUNNER_CONTEXT: ${{ toJson(runner) }}
+        run: echo "$RUNNER_CONTEXT"
