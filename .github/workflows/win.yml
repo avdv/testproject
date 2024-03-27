@@ -1,0 +1,14 @@
+name: Win Debug
+
+on:
+  push:
+
+jobs:
+  debug:
+    runs-on: windows-latest
+
+    steps:
+      - uses: actions/checkout@v4
+      - name: test binary
+        run: "& .\\hello.exe"
+
