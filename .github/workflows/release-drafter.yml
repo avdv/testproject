@@ -47,3 +47,7 @@ jobs:
           echo 'body: ${{ steps.release.outputs.body }}'
           echo 'html_url: ${{ steps.release.outputs.html_url }}'
           echo 'upload_url: ${{ steps.release.outputs.upload_url }}'
+      - run: |
+          date --rfc-2822 > release_artifact.txt
+      - run: |
+          gh release upload '${{ steps.release.outputs.tag_name }}' release_artifact.txt --clobber
