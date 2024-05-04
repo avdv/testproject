@@ -42,8 +42,8 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - run: |
           echo id: ${{ steps.release.outputs.id }}
-          echo name: ${{ steps.release.outputs.name }}
-          echo tag_name: ${{ steps.release.outputs.tag_name }}
-          echo body: ${{ steps.release.outputs.body }}
-          echo html_url: ${{ steps.release.outputs.html_url }}
-          echo upload_url: ${{ steps.release.outputs.upload_url }}
+          echo 'name: ${{ steps.release.outputs.name }}'
+          echo 'tag_name: ${{ steps.release.outputs.tag_name }}'
+          echo 'body: ${{ steps.release.outputs.body }}'
+          echo 'html_url: ${{ steps.release.outputs.html_url }}'
+          echo 'upload_url: ${{ steps.release.outputs.upload_url }}'
