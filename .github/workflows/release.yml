@@ -1,0 +1,19 @@
+name: Test Release
+
+on:
+  release:
+
+jobs:
+  debug:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Runner
+        run: echo "${{ toJSON(runner) }}"
+      - name: Github
+        run: echo "${{ toJSON(github) }}"
+      - name: Job
+        run: echo "${{ toJSON(job) }}"
+      - name: Steps
+        run: echo "${{ toJSON(steps) }}"
+
