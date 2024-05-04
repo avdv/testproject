@@ -28,4 +28,6 @@ jobs:
           cat <<'EOF'
           ${{ toJSON(steps) }}
           EOF
+      - run: |
+          echo https://jitpack.io/com/github/avdv/scalals/${{ github.ref_name }}/scalals-${{ github.ref_name }}.pom
 
