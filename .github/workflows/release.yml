@@ -9,11 +9,23 @@ jobs:
 
     steps:
       - name: Runner
-        run: echo "${{ toJSON(runner) }}"
+        run: |
+          cat <<'EOF'
+          ${{ toJSON(runner) }}
+          EOF
       - name: Github
-        run: echo "${{ toJSON(github) }}"
+        run: |
+          cat <<'EOF'
+          ${{ toJSON(github) }}
+          EOF
       - name: Job
-        run: echo "${{ toJSON(job) }}"
+        run: |
+          cat <<'EOF'
+          ${{ toJSON(job) }}
+          EOF
       - name: Steps
-        run: echo "${{ toJSON(steps) }}"
+        run: |
+          cat <<'EOF'
+          ${{ toJSON(steps) }}
+          EOF
 
