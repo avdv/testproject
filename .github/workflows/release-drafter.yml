@@ -51,3 +51,5 @@ jobs:
           date --rfc-2822 > release_artifact.txt
       - run: |
           gh release upload '${{ steps.release.outputs.tag_name }}' release_artifact.txt --clobber
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
