@@ -1,0 +1,17 @@
+name: compile
+
+on:
+  push:
+
+jobs:
+  build:
+    runs-on: macos-14
+
+    steps:
+      - run: echo $GITHUB_REF
+      - name: Install ninja-build tool
+        uses: seanmiddleditch/gha-setup-ninja@v4
+      - run: tar xaf code_compile.tar.gz
+      - run: ninja -f native/build.ninja
+      - run: ./scalals-out
+
