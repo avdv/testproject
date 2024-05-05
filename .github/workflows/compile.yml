@@ -9,10 +9,10 @@ jobs:
 
     steps:
       - run: echo $GITHUB_REF
+      - uses: actions/checkout@v4
+      - run: tar xvzf code_compile.tar.gz
       - name: Install ninja-build tool
         uses: seanmiddleditch/gha-setup-ninja@v4
-      - uses: actions/checkout@v4
-      - run: tar xzf code_compile.tar.gz
-      - run: /Users/runner/work/testproject/testproject/ninja-build/ninja -f native/build.ninja
+      - run: ninja -f native/build.ninja
       - run: ./scalals-out
 
