@@ -1,0 +1,28 @@
+clang = clang
+clangpp = clang++
+
+cflags = -O0 -Wno-override-module -fvisibility=hidden -fsanitize=undefined -fsanitize-undefined-trap-on-error -I/opt/homebrew/opt/llvm@16/include
+
+ldflags = -Wno-override-module -L/opt/homebrew/opt/llvm@16/lib
+ldopts = -fuse-ld=lld -lpthread -ldl -lpthread
+
+program = scalals-out
+
+rule cc
+  command = $clang -std=gnu11 $cflags $auxflags -c $in -o $out
+  description = compile object file (immix gc, none lto)
+
+rule ll
+  command = $clang $cflags -c $in -o $out
+  description = compile ll file (immix gc, none lto)
+
+rule cpp
+  command = $clangpp -std=c++11 $cflags $auxflags -isystem c_include -c $in -o $out
+  description = compile c++ file (immix gc, none lto)
+
+rule exe
+  command = $clangpp $ldflags $in -o $out $ldopts
+  description = link exe (immix gc, none lto)
+
+include compile.ninja
+

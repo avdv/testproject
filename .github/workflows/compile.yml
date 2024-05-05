@@ -12,10 +12,10 @@ jobs:
       - uses: actions/checkout@v4
       - run: tar xvzf code_compile.tar.gz
       - run: brew install llvm@16
-      - run: echo /usr/local/opt/llvm/bin/ >> "$GITHUB_PATH"
+      - run: echo /opt/homebrew/opt/llvm@16/bin >> "$GITHUB_PATH"
       - run: clang --version
       - name: Install ninja-build tool
         uses: seanmiddleditch/gha-setup-ninja@v4
-      - run: ninja -f native/build.ninja
+      - run: ninja -f build.ninja
       - run: ./scalals-out
 
