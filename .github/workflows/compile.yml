@@ -11,6 +11,10 @@ jobs:
       - run: echo $GITHUB_REF
       - uses: actions/checkout@v4
       - run: tar xvzf code_compile.tar.gz
+      - name: Install LLVM and Clang
+        uses: KyleMayes/install-llvm-action@v2.0.2
+        with:
+          version: "16.0.6"
       - name: Install ninja-build tool
         uses: seanmiddleditch/gha-setup-ninja@v4
       - run: ninja -f native/build.ninja
