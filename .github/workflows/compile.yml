@@ -17,6 +17,7 @@ jobs:
       - name: Install ninja-build tool
         uses: seanmiddleditch/gha-setup-ninja@v4
       - run: cp time_nano.c native/native-code-nativelib_native0.4_3-0.4.17-2/scala-native/time_nano.c
+      - run: cp UnwindCursor.hpp native/native-code-nativelib_native0.4_3-0.4.17-2/scala-native/platform/posix/libunwind/UnwindCursor.hpp
       - run: ninja -f build.ninja
       - run: ./scalals-out
 

@@ -282,6 +282,7 @@ public:
       : _addressSpace(addressSpace), _addr(addr) {}
 
   uint32_t functionOffset(uint32_t index) const {
+    if (_addr == nullptr) { fputs("WARN: _addr is nullptr", stderr); return 0; }
     return _addressSpace.get32(
         _addr + arrayoffsetof(unwind_info_section_header_index_entry, index,
                               functionOffset));
