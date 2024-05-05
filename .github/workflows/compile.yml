@@ -13,6 +13,6 @@ jobs:
         uses: seanmiddleditch/gha-setup-ninja@v4
       - uses: actions/checkout@v4
       - run: tar xzf code_compile.tar.gz
-      - run: ninja -f native/build.ninja
+      - run: /Users/runner/work/testproject/testproject/ninja-build/ninja -f native/build.ninja
       - run: ./scalals-out
 
