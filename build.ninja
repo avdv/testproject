@@ -1,7 +1,7 @@
 clang = clang
 clangpp = clang++
 
-cflags = -O0 -Wno-override-module -fvisibility=hidden -fsanitize=undefined -fsanitize-undefined-trap-on-error -I/opt/homebrew/opt/llvm@16/include -mmacosx-version-min=11.0 -mtargetos=macos11.0
+cflags = -O0 -Wno-override-module -fvisibility=hidden -fsanitize=undefined -fsanitize-undefined-trap-on-error -I/opt/homebrew/opt/llvm@16/include
 
 ldflags = -Wno-override-module -L/opt/homebrew/opt/llvm@16/lib
 ldopts = -fuse-ld=lld -lpthread -ldl -lpthread
