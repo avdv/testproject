@@ -14,7 +14,7 @@ jobs:
       - name: Install LLVM and Clang
         uses: KyleMayes/install-llvm-action@v2.0.2
         with:
-          version: "16.0.6"
+          version: "16.0.5"
       - name: Install ninja-build tool
         uses: seanmiddleditch/gha-setup-ninja@v4
       - run: ninja -f native/build.ninja
