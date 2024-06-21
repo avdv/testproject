@@ -25,11 +25,12 @@ jobs:
       # - uses: ./.github/actions/configure_bazelrc
       #   with:
       #     buildbuddy_api_key: ${{ secrets.BUILDBUDDY_API_KEY }}
-      - name: Build & test
+      - name: Build & Run
         run: |
           echo
           echo "::group::Running $(head -n1 README.md) without Nix"
-          bazel run :hello
+          bazel build -s :hello
+          bazel-bin/hello
 
       - name: Setup tmate session
         uses: mxschmitt/action-tmate@v3
