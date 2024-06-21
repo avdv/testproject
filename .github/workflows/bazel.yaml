@@ -24,6 +24,8 @@ jobs:
           bazel version
           bazel info release
       - name: Build & Run
+        env:
+          BAZEL_USE_CPP_ONLY_TOOLCHAIN: 1
         run: |
           echo
           echo "::group::Running $(head -n1 README.md) without Nix"
