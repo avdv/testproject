@@ -8,4 +8,5 @@ cc_library(
 cc_binary(
     name = "hello",
     deps = [":lib"],
+    linkstatic = False,
 )
