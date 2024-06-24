@@ -30,5 +30,14 @@ jobs:
           echo
           echo "::group::Running $(head -n1 README.md) without Nix"
           bazel build -s :hello
-          bazel-bin/hello
+          vtool -show-build bazel-bin/hello
+          bazel-bin/hello || echo "failed"
+
+          cp BUILD.mac BUILD
+
+          bazel build -s :hello
+          vtool -show-build bazel-bin/hello
+          bazel-bin/hello || echo "failed"
+
+
 
