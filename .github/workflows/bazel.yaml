@@ -33,11 +33,10 @@ jobs:
           vtool -show-build bazel-bin/hello
           bazel-bin/hello || echo "failed"
 
-          cp BUILD.mac BUILD
+          bazel build -s --macos_minimum_os=12.0 :hello
 
-          bazel build -s :hello
           vtool -show-build bazel-bin/hello
-          bazel-bin/hello || echo "failed"
+          bazel-bin/hello
 
 
 
