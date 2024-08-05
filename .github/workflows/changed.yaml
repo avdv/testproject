@@ -19,7 +19,7 @@ jobs:
         uses: tj-actions/changed-files@v44
         with:
           exclude_submodules: true
-          base_sha: ${{ github.head_ref || 'HEAD' }}
+          base_sha: ${{ github.target_ref || github.ref }}
           files: |
             .github/**
       - env:
