@@ -15,12 +15,17 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Changed files
+        id: changed
         run: |
           set -xv
           if [[ -n "$GITHUB_BASE_REF" ]]; then
              git fetch origin "$GITHUB_BASE_REF"
              git diff --name-only "origin/$GITHUB_BASE_REF"..
+             echo "result=$( git diff --quiet "origin/$GITHUB_BASE_REF".. -- .github && echo no || echo yes )" >> "$GITHUB_OUTPUT"
           fi
+      - name: Report
+        if: ${{ steps.changed.outputs.result == 'yes' }}
+        run: echo YES
 
 
 
