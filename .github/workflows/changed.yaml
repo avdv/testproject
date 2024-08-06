@@ -17,7 +17,7 @@ jobs:
       - name: Changed files
         run: |
           git fetch origin ${{ github.base_ref || github.sha }}
-          git diff --name-only ${GITHUB_BASE_REF:+refs/heads/}${{ github.base_ref || github.sha }}..
+          git diff --name-only ${GITHUB_BASE_REF:+origin/$GITHUB_BASE_REF}${GITHUB_BASE_REF:-${{ github.sha }}}..
 
 
 
