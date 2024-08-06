@@ -16,7 +16,7 @@ jobs:
       - uses: actions/checkout@v4
       - name: Changed files
         run: |
-          git diff --name-only ${{ github.base_ref || github.sha }}..${{ github.sha }}
+          git diff --name-only ${GITHUB_BASE_REF+refs/heads/}${{ github.base_ref || github.sha }}..
 
 
 
