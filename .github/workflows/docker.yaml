@@ -1,0 +1,28 @@
+name: Build Docker Image
+
+on:
+  push:
+
+permissions:
+  packages: write
+
+jobs:
+  build:
+    name: Build Docker Image
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Install nix
+        uses: cachix/install-nix-action@v27
+      - shell: bash
+        name: Log in to GitHub Container Registry
+        run: echo "${{ secrets.GITHUB_TOKEN }}" | skopeo login --username ${{ github.actor }} --password-stdin ghcr.io
+      - name: Build Docker Image
+        env:
+          REPO: ${{ github.repository_owner }}
+        shell: bash
+        run: |
+          nix run path:.#dockerBuild \
+          | gzip --fast --no-name \
+          | nix run nixpkgs#skopeo -- copy --digestfile image.digest --preserve-digests docker-archive:/dev/stdin docker://ghcr.io/${REPO,,*}/nix-build:latest
