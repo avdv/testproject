@@ -14,14 +14,14 @@
       packages.${system}.dockerImage =
         let
           inherit (pkgs) dockerTools;
-          inherit (pkgs) bash python;
+          inherit (pkgs) bash python3;
         in
         dockerTools.streamNixShellImage {
           name = "nix-build";
           drv = pkgs.mkShell.override { stdenv = pkgs.stdenvNoCC; }
             {
               PATH = pkgs.lib.makeBinPath [ pkgs.bash pkgs.coreutils ];
-              nativeBuildInputs = [ bash python ];
+              nativeBuildInputs = [ bash python3 ];
             };
           tag = "latest";
         };
