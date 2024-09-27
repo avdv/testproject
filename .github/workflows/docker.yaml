@@ -24,7 +24,6 @@ jobs:
         shell: bash
         run: |
           nix run path:.#dockerBuild \
-          | gzip --fast --no-name \
           | nix run nixpkgs#skopeo -- copy --digestfile image.digest --preserve-digests docker-archive:/dev/stdin docker://ghcr.io/${REPO,,*}/nix-build:latest
       - name: Show image digest
         id: image_digest
