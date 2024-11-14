@@ -30,7 +30,7 @@ jobs:
           hadrian/build -j docs --docs=no-sphinx-pdfs
           hadrian/build -j binary-dist --docs=no-sphinx-pdfs
       - name: Upload dist
-        uses: softprops/action-gh-release@v1
+        uses: softprops/action-gh-release@v2
         with:
           fail_on_unmatched_files: true
           name: 'ghc-9.2.5'

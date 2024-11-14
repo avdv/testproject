@@ -24,7 +24,7 @@ jobs:
           hadrian/build -j docs
           hadrian/build -j binary-dist
       - name: Upload dist
-        uses: softprops/action-gh-release@v1
+        uses: softprops/action-gh-release@v2
         with:
           fail_on_unmatched_files: true
           name: 'ghc-9.2.5'
