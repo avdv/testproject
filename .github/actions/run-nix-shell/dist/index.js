@@ -27548,13 +27548,13 @@ const path = __nccwpck_require__(1017);
 async function run() {
   try {
     // Get inputs
-    const runScript = core.getInput('run');
-    const pure = core.getInput('pure') === 'true';
+    const runScript = core.getMultilineInput('run');
+    const pure = core.getBooleanInput('pure');
     const options = core.getInput('options') || '';
     const workingDir = core.getInput('working-directory');
     const derivationPath = core.getInput('derivation-path') || '.';
     const shellFlags = core.getInput('shell-flags');
-    const verbose = core.getInput('verbose') === 'true';
+    const verbose = core.getBooleanInput('verbose');
 
     // Construct the nix-shell command
     const nixShellArgs = ['--command'];
@@ -27570,30 +27570,36 @@ async function run() {
     }
 
     const nixShellCommand = `nix-shell ${path.resolve(derivationPath)} ${nixShellArgs.join(' ')}`;
+    const outputFile = fs.mkdtempSync(path.join(os.tmpdir(), 'github_output_'));
 
     // Change working directory if specified
     const execOptions = {
       cwd: path.resolve(workingDir),
-      stdio: verbose ? 'inherit' : 'pipe',
+      //env: { ...process.env, GITHUB_OUTPUT: outputFile },
+      // silent: !verbose
     };
 
-    // Execute the nix-shell command
-    let output = '';
-    const exitCode = await exec.exec(nixShellCommand, [], {
-      ...execOptions,
-      listeners: {
-        stdout: (data) => (output += data.toString()),
-        stderr: (data) => {
-          if (verbose) process.stderr.write(data.toString());
-        },
-      },
-    });
-
-    // Set output
-    core.setOutput('outputs', output.trim());
+    const exitCode = await exec.exec(nixShellCommand, [], execOptions);
     if (exitCode !== 0) {
       throw new Error(`nix-shell command exited with code ${exitCode}`);
     }
+
+      // // Parse the temporary GITHUB_OUTPUT file
+      // if (fs.existsSync(outputFile)) {
+      //     const outputData = fs.readFileSync(outputFile, 'utf8');
+      //     const keyValuePairs = outputData.split('\n').filter((line) => line.includes('='));
+
+      //     keyValuePairs.forEach((pair) => {
+      //         const [key, ...valueParts] = pair.split('=');
+      //         const value = valueParts.join('=').trim();
+      //         core.setOutput(key.trim(), value);
+      //     });
+
+      //     core.info('Action outputs successfully set.');
+      // } else {
+      //     core.warning('Temporary GITHUB_OUTPUT file was not created or is empty.');
+      // }
+
   } catch (error) {
     core.setFailed(error.message);
   }
