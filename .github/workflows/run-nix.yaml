@@ -16,7 +16,7 @@ jobs:
 
       - name: a
         id: a
-        uses: tweag/run-nix-shell@v0
+        uses: ./.github/actions/run-nix-shell
         with:
           pure: false
           run: |
