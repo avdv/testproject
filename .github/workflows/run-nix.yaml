@@ -1,0 +1,27 @@
+name: Whatever
+
+on:
+  push:
+  workflow_dispatch:
+
+jobs:
+  whatever:
+    runs-on: [ubuntu-latest]
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: cachix/install-nix-action@v30
+
+      - name: a
+        id: a
+        uses: tweag/run-nix-shell@v0
+        with:
+          pure: false
+          run: |
+            echo "output to: $GITHUB_OUTPUT"
+            echo "foo_bar=what" >> "$GITHUB_OUTPUT"
+
+      - name: b
+        id: b
+        run: |
+          echo "${{ steps.a.outputs.foo_bar }}"k
