@@ -27570,7 +27570,7 @@ async function run() {
     }
 
     const nixShellCommand = `nix-shell ${path.resolve(derivationPath)} ${nixShellArgs.join(' ')}`;
-    const outputFile = fs.mkdtempSync(path.join(os.tmpdir(), 'github_output_'));
+    //const outputFile = fs.mkdtempSync(path.join(os.tmpdir(), 'github_output_'));
 
     // Change working directory if specified
     const execOptions = {
