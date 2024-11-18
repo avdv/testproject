@@ -27548,7 +27548,7 @@ const path = __nccwpck_require__(1017);
 async function run() {
   try {
     // Get inputs
-    const runScript = core.getMultilineInput('run');
+    const runScript = core.getInput('run');
     const pure = core.getBooleanInput('pure');
     const options = core.getInput('options') || '';
     const workingDir = core.getInput('working-directory');
