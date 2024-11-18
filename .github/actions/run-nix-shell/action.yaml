@@ -32,40 +32,6 @@ inputs:
     description: Enable debug output written to stderr.
     default: false
 
-name: Run nix-shell scripts
-description: Executes shell scripts using nix-shell.
-
-inputs:
-  run:
-    type: string
-    required: true
-    description: The path to a file that contains shell code or the actual shell code.
-  pure:
-    type: boolean
-    default: true
-    description: Whether to run the script with the `--pure` option. Defaults to `true`.
-  options:
-    type: string
-    description: Any parameters that are to be passed to nix-shell are specified here.
-  working-directory:
-    type: string
-    description: |
-      The path where the script will be executed. This is not the path where nix-shell is executed.
-    default: .
-  derivation-path:
-    type: string
-    description: |
-      The path to directory or the shell.nix or default.nix to use to set up the environment. This
-      is the directory where nix-shell is executed.
-  shell-flags:
-    type: string
-    default: set -o errexit -o nounset -o pipefail
-    description: These flags will be set before executing the script.
-  verbose:
-    type: boolean
-    description: Enable debug output written to stderr.
-    default: false
-
 outputs:
   outputs:
     description: The outputs of the nix-shell-run
