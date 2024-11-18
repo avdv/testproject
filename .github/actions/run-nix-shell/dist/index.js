@@ -27557,7 +27557,7 @@ async function run() {
     const verbose = core.getBooleanInput('verbose');
 
     // Construct the nix-shell command
-    const nixShellArgs = ['--command'];
+    const nixShellArgs = [path.resolve(derivationPath), '--command'];
     let scriptCommand = `${shellFlags} && ${runScript}`;
     nixShellArgs.push(scriptCommand);
 
@@ -27569,7 +27569,7 @@ async function run() {
       nixShellArgs.unshift(...options.split(' '));
     }
 
-    const nixShellCommand = `nix-shell ${path.resolve(derivationPath)} ${nixShellArgs.join(' ')}`;
+    //const nixShellArgs = [path.resolve(derivationPath)] + nixShellArgs;
     //const outputFile = fs.mkdtempSync(path.join(os.tmpdir(), 'github_output_'));
 
     // Change working directory if specified
@@ -27579,7 +27579,7 @@ async function run() {
       // silent: !verbose
     };
 
-    const exitCode = await exec.exec(nixShellCommand, [], execOptions);
+    const exitCode = await exec.exec("nix-shell", nixShellArgs, [], execOptions);
     if (exitCode !== 0) {
       throw new Error(`nix-shell command exited with code ${exitCode}`);
     }
