@@ -22,8 +22,12 @@ jobs:
           run: |
             echo "output to: $GITHUB_OUTPUT"
             echo "foo_bar=what" >> "$GITHUB_OUTPUT"
+            cat "$GITHUB_OUTPUT"
 
       - name: b
         id: b
         run: |
+          echo '${{ toJson ( steps.a.outputs ) }}'
+          echo '${{ toJson ( steps.a ) }}'
+          echo '${{ toJson ( steps ) }}'
           echo "${{ steps.a.outputs.foo_bar }}"k
