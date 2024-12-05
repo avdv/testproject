@@ -1,0 +1,35 @@
+name: Windows Bazel build
+
+on:
+  push:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: ${{ github.ref != 'refs/heads/main' }}
+
+jobs:
+  test-examples:
+    name: Build & Test - Examples
+    runs-on: windows-latest
+    strategy:
+      matrix:
+        bazel:
+          - 7.2.1
+          - 7.3.0
+          - 8.0.0rc7
+    env:
+      USE_BAZEL_VERSION: ${{ matrix.bazel }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Bazel info
+        run: |
+          bazel version
+          bazel info release
+      - name: Build & Run
+        env:
+          BAZEL_USE_CPP_ONLY_TOOLCHAIN: 1
+        run: |-
+          bazel build ...
+      # - name: Setup tmate session
+      #   uses: mxschmitt/action-tmate@v3
+      #   if: failure()

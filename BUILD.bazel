@@ -1,0 +1,26 @@
+
+
+
+sh_binary(
+    name = "hello_world",
+    srcs = ["hello_world.sh"],
+)
+load(
+    "@rules_sh//sh:sh.bzl",
+    "sh_binaries",
+)
+
+sh_binaries(
+    name = "bundle",
+    srcs = [":hello_world"],
+)
+
+genrule(
+    name = "genrule",
+    toolchains = [":bundle"],
+    cmd = """
+    echo $(BUNDLE_HELLO_WORLD) > $@
+    $(BUNDLE_HELLO_WORLD)
+    """,
+    outs = ["greeting.txt"]
+)
