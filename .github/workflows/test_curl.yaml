@@ -1,0 +1,13 @@
+
+on:
+  push:
+
+jobs:
+  test:
+    runs-on: ubuntu-24.04
+    steps:
+      - run: |
+          for ((i=0; i<800; ++i)); do
+            echo "## $i ##"
+            curl -svo /dev/null -Huser-agent:'Haskell pantry package' https://hackage.haskell.org/package/vector-stream-0.1.0.1.tar.gz
+          done
