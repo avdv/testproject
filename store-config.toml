@@ -1,0 +1,25 @@
+[blobservices.root]
+type = "objectstore"
+object_store_url = "file:///var/lib/snix-castore/blobs"
+object_store_options = {}
+
+[directoryservices.root]
+type = "redb"
+path = "/var/lib/snix-castore/directories.redb"
+
+[pathinfoservices.root]
+type = "cache"
+near = "&redb"
+far = "&cache-nixos-org"
+
+[pathinfoservices.redb]
+type = "redb"
+path = "/var/lib/snix-store/pathinfo.redb"
+
+[pathinfoservices.cache-nixos-org]
+type = "nix"
+base_url = "https://cache.nixos.org"
+trusted_public_keys = ["cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY="]
+blob_service = "&root"
+directory_service = "&root"
+
